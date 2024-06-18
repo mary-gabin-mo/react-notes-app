@@ -1,5 +1,19 @@
+import { useState } from "react";
+import { nanoid } from 'nanoid';
+import NotesList from "./components/NotesList";
+
 const App = () => {
-  return (<p>hello react!</p>)
+  const [notes, setNotes] = useState([{
+    id: nanoid(),
+    text: "This is my first note!",
+    date: "17/06/2024"
+  }]);
+
+  return (
+    <div className='container'>
+      <NotesList />
+    </div>
+  )
 };
 
 export default App;
