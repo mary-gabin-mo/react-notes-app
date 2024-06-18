@@ -8,8 +8,8 @@ const NotesList = ({ notes, handleAddNote }) => {
                 <Note id={note.id} text={note.text} date={note.date}/>
             ))}
             <AddNote handleAddNote={handleAddNote} /> 
-            {/* above = prop drilling: passing the method through to the next level
-             */}
+            {/* above = prop drilling: the process of passing things through to the next level
+              - if using often, might be worthwhile to consider using context API*/}
         </div>
     );
 };
