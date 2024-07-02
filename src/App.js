@@ -5,51 +5,33 @@ import Search from "./components/Search";
 import Header from "./components/Header";
 
 const App = () => {
-  const [notes, setNotes] = useState([
-    {
-      id: nanoid(),
-      text: "This is my first note!",
-      date: "17/06/2024"
-    },{
-      id: nanoid(),
-      text: "This is my second note!",
-      date: "17/06/2024"
-    },{
-      id: nanoid(),
-      text: "This is my third note!",
-      date: "19/06/2024"
-    },{
-      id: nanoid(),
-      text: "This is my new note!",
-      date: "20/06/2024"  
-    },  
-  ]);
+  const [notes, setNotes] = useState(() => JSON.parse(localStorage.getItem('react-notes-app-data')) || []);
 
   const [searchText, setSearchText] = useState('');
 
   const [darkMode, setDarkMode] = useState(false);
 
-  // Loading the notes from the local storage when the app loads
-  useEffect(() => {
-    const savedNotes = JSON.parse(
-      localStorage.getItem('react-notes-app-data')
-    );
+  // // Loading the notes from the local storage when the app loads
+  // useEffect(() => {
+  //   const savedNotes = JSON.parse(
+  //     localStorage.getItem('react-notes-app-data')
+  //   );
 
-    // check if any notes are retrieved
-    if (savedNotes !== null){
-      setNotes(savedNotes);
-    }
+  //   // check if any notes are retrieved
+  //   if (savedNotes){
+  //     setNotes(savedNotes);
+  //   }
 
-  }, []);
-  // when the dependency array is empty in the effect hook, 
-  //it's only going to run on the first load and won't run after that
+  // // }, []);
+  // // when the dependency array is empty in the effect hook, 
+  // //it's only going to run on the first load and won't run after that
 
   // Saving the notes to a local storage
   useEffect(() => {
-    localStorage.setItem(
-      'react-notes-app-data', // key
-      JSON.stringify(notes)
-    );
+      localStorage.setItem(
+        'react-notes-app-data', // key
+        JSON.stringify(notes)
+      );
   }, [notes]);
   // this is a good approach because any time the notes array changes, 
   // this will trigger automatically
@@ -61,7 +43,7 @@ const App = () => {
     const newNote = {
       id: nanoid(),
       text: text,
-      date: date.toLocaleDateString()
+      date: date.toLocaleDateString(),
     };
     const newNotes = [...notes, newNote];
     setNotes(newNotes);
