@@ -1,37 +1,43 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { nanoid } from "nanoid";
 import NotesList from "./components/NotesList";
 import Search from "./components/Search";
 import Header from "./components/Header";
 
 const App = () => {
-  const [notes, setNotes] = useState(() => JSON.parse(localStorage.getItem('react-notes-app-data')) || []);
+  const [notes, setNotes] = useState([]);
 
   const [searchText, setSearchText] = useState('');
 
   const [darkMode, setDarkMode] = useState(false);
 
-  // // Loading the notes from the local storage when the app loads
-  // useEffect(() => {
-  //   const savedNotes = JSON.parse(
-  //     localStorage.getItem('react-notes-app-data')
-  //   );
+  const hasPageBeenRendered = useRef(false);
 
-  //   // check if any notes are retrieved
-  //   if (savedNotes){
-  //     setNotes(savedNotes);
-  //   }
+  // Loading the notes from the local storage when the app loads
+  useEffect(() => {
+    const savedNotes = JSON.parse(
+      localStorage.getItem('react-notes-app-data')
+    );
 
-  // // }, []);
-  // // when the dependency array is empty in the effect hook, 
-  // //it's only going to run on the first load and won't run after that
+    // check if any notes are retrieved
+    if (savedNotes){
+      setNotes(savedNotes);
+    }
+
+  }, []);
+  // when the dependency array is empty in the effect hook, 
+  //it's only going to run on the first load and won't run after that
 
   // Saving the notes to a local storage
   useEffect(() => {
+    if (hasPageBeenRendered.current) {
       localStorage.setItem(
         'react-notes-app-data', // key
         JSON.stringify(notes)
       );
+      return;
+    }
+    hasPageBeenRendered.current = true;
   }, [notes]);
   // this is a good approach because any time the notes array changes, 
   // this will trigger automatically
